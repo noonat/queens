@@ -1,0 +1,25 @@
+traps
+- things falling from ceiling
+- things shooting across screen
+- stuff swinging across screen
+- things rolling after you
+- floor collapsing
+- things pushing you off of cliffs
+- making the wrong choice
+
+deaths:
+- crushing
+- drowning
+- burning
+- bats
+- falling
+- shooting
+- poisoning
+- petrifying
+- melting
+
+actions:
+- walking
+- jumping
+- running
+- grabbing
