@@ -3,9 +3,8 @@ package com.noonat.queens
 	import com.adamatomic.flixel.FlxArray;
 	import com.adamatomic.flixel.FlxEmitter;
 	import com.adamatomic.flixel.FlxG;
-	import com.adamatomic.flixel.FlxSprite;
 
-	public class King extends FlxSprite
+	public class King extends Sprite
 	{
 		[Embed(source="../../../data/queens/king.png")] private var ImgKing:Class;
 		

@@ -2,6 +2,7 @@ package com.adamatomic.flixel
 {
 	import com.adamatomic.flixel.data.FlxAnim;
 	import com.adamatomic.flixel.data.FlxCore;
+	import com.adamatomic.flixel.FlxBlock;
 	
 	import flash.display.BitmapData;
 	import flash.geom.Matrix;
@@ -196,15 +197,15 @@ package com.adamatomic.flixel
 		
 		//@desc		Called when this object collides with a FlxBlock on one of its sides
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		override public function hitWall():Boolean { velocity.x = 0; return true; }
+		override public function hitWall(block:FlxBlock):Boolean { velocity.x = 0; return true; }
 		
 		//@desc		Called when this object collides with the top of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		override public function hitFloor():Boolean { velocity.y = 0; return true; }
+		override public function hitFloor(block:FlxBlock):Boolean { velocity.y = 0; return true; }
 		
 		//@desc		Called when this object collides with the bottom of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		override public function hitCeiling():Boolean { velocity.y = 0; return true; }
+		override public function hitCeiling(block:FlxBlock):Boolean { velocity.y = 0; return true; }
 		
 		//@desc		Call this function to "damage" (or give health bonus) to this sprite
 		//@param	Damage		How much health to take away (use a negative number to give a health bonus)

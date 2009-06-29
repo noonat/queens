@@ -1,6 +1,7 @@
 package com.noonat.queens
 {
 	import com.adamatomic.flixel.FlxArray;
+	import com.adamatomic.flixel.FlxBlock;
 	import com.adamatomic.flixel.FlxEmitter;
 	import com.adamatomic.flixel.FlxG;
 	import com.adamatomic.flixel.FlxSprite;
@@ -21,10 +22,10 @@ package com.noonat.queens
 			super(ImgQueen, X, Y, true, true);
 			
 			// bounding box tweaks
-			width = 8;
-			height = 14;
-			offset.x = 4;
+			offset.x = 5;
 			offset.y = 2;
+			width = 6;
+			height = 14;
 			
 			// basic player physics
 			maxVelocity.x = _runVelocity;
@@ -37,79 +38,78 @@ package com.noonat.queens
 			addAnimation("run", [1, 2, 3, 0], 10);
 			addAnimation("jump", [2]);
 			addAnimation("standUp", [4, 5, 6], 2, false);
+			addAnimation("dead", [4], 1, false);
 		}
 		
 		override public function update():void
 		{
-			//FlxG.log(Math.floor(x).toString());
-			
+			FlxG.log(Math.floor(x).toString());
 			if (!dead && y > 240) {
 				kill();
 			}
 			
 			// game restart timer
+			acceleration.x = 0;
 			if (dead) {
-				FlxG.log(_restartTimer.toString());
 				_restartTimer += FlxG.elapsed;
 				if (_restartTimer > 3) {
 					FlxG.switchState(PlayState);
 				}
-				return;
 			}
+			else {
+				if (_standingUp) {
+					if (finished) {
+						_standingUp = false;
+					}
+					else {
+						super.update();
+						return;
+					}
+				}
 			
-			if (_standingUp) {
-				if (finished) {
-					_standingUp = false;
+				// movement
+				if (_intro) {
+					if (y < 16) {
+						acceleration.x -= drag.x * 0.1;
+					}
 				}
 				else {
-					super.update();
-					return;
-				}
-			}
-			
-			// movement
-			acceleration.x = 0;
-			if (_intro) {
-				if (y < 16) {
-					acceleration.x -= drag.x * 0.1;
-				}
-			}
-			else {
-				if (FlxG.kLeft) {
-					facing(false);
-					acceleration.x -= drag.x;
-				}
-				else if (FlxG.kRight) {
-					facing(true);
-					acceleration.x += drag.x;
-				}
-				if (FlxG.justPressed(FlxG.A)) {
-					if (!velocity.y) {
-						velocity.y = -_jumpVelocity;
+					if (FlxG.kLeft) {
+						facing(false);
+						acceleration.x -= drag.x;
 					}
-					else if (!_doubleJumped) {
-						velocity.y = -_jumpVelocity;
-						_doubleJumped = true;
+					else if (FlxG.kRight) {
+						facing(true);
+						acceleration.x += drag.x;
+					}
+					if (FlxG.justPressed(FlxG.A)) {
+						if (!velocity.y) {
+							velocity.y = -_jumpVelocity;
+						}
+						else if (!_doubleJumped) {
+							velocity.y = -_jumpVelocity;
+							_doubleJumped = true;
+						}
 					}
 				}
-			}
 			
-			// animation
-			if (velocity.y != 0) {
-				play("jump");
-			}
-			else if (velocity.x != 0) {
-				play("run");
-			}
-			else {
-				play("idle");
+				// animation
+				if (velocity.y != 0) {
+					play("jump");
+				}
+				else if (velocity.x != 0) {
+					play("run");
+				}
+				else {
+					play("idle");
+				}
 			}
 				
 			// update position and animation
 			super.update();
 		}
 		
-		override public function hitFloor():Boolean
+		override public function hitFloor(block:FlxBlock):Boolean
 		{
 			if (y > 64 && _intro) {
 				_intro = false;
@@ -118,17 +118,10 @@ package com.noonat.queens
 				_standingUp = true;
 			}
 			_doubleJumped = false;
-			return super.hitFloor();
-		}
-		
-		override public function hurt(Damage:Number):void
-		{
-			Damage = 0;
-			if (flickering()) {
-				return;
+			if (block is Platform) {
+				x += (block as Platform).moved;
 			}
-			flicker(1.3);
-			super.hurt(Damage);
+			return super.hitFloor(block);
 		}
 		
 		override public function kill():void
@@ -136,10 +129,9 @@ package com.noonat.queens
 			if (dead) {
 				return;
 			}
+			play('dead');
 			super.kill();
-			flicker(-1);
 			exists = true;
-			visible = false;
 			FlxG.quake(0.005,0.35);
 			FlxG.flash(0xffd8eba2,0.2);
 			FlxG.fade(0xff000000,2);

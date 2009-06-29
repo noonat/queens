@@ -1,6 +1,7 @@
 package com.adamatomic.flixel.data
 {
 	import com.adamatomic.flixel.FlxG;
+	import com.adamatomic.flixel.FlxBlock;
 	import flash.geom.Point;
 	
 	//@desc		This is the base class for most of the display objects (FlxSprite, FlxText, etc).  It includes some very simple basic attributes about game objects.
@@ -101,15 +102,15 @@ package com.adamatomic.flixel.data
 		
 		//@desc		Called when this object collides with a FlxBlock on one of its sides
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		virtual public function hitWall():Boolean { return true; }
+		virtual public function hitWall(block:FlxBlock):Boolean { return true; }
 		
 		//@desc		Called when this object collides with the top of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		virtual public function hitFloor():Boolean { return true; }
+		virtual public function hitFloor(block:FlxBlock):Boolean { return true; }
 		
 		//@desc		Called when this object collides with the bottom of a FlxBlock
 		//@return	Whether you wish the FlxBlock to collide with it or not
-		virtual public function hitCeiling():Boolean { return true; }
+		virtual public function hitCeiling(block:FlxBlock):Boolean { return true; }
 		
 		//@desc		Call this function to "kill" a sprite so that it no longer 'exists'
 		virtual public function kill():void

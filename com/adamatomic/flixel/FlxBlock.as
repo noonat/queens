@@ -87,7 +87,7 @@ package com.adamatomic.flixel
 				{
 					if(overlapsPoint(Spr.x + (Spr.width>>1),Spr.y + Spr.height))
 					{
-						if(Spr.hitFloor())
+						if(Spr.hitFloor(this))
 							Spr.y = y - Spr.height;
 					}
 					else
@@ -97,7 +97,7 @@ package com.adamatomic.flixel
 				{
 					if(overlapsPoint(Spr.x + (Spr.width>>1),Spr.y))
 					{
-						if(Spr.hitCeiling())
+						if(Spr.hitCeiling(this))
 							Spr.y = y + height;
 					}
 					else
@@ -108,7 +108,7 @@ package com.adamatomic.flixel
 				{
 					if(overlapsPoint(Spr.x,Spr.y + (Spr.height>>1)))
 					{
-						if(Spr.hitWall())
+						if(Spr.hitWall(this))
 							Spr.x = x + width;
 					}
 					else
@@ -118,7 +118,7 @@ package com.adamatomic.flixel
 				{
 					if(overlapsPoint(Spr.x + Spr.width,Spr.y + (Spr.height>>1)))
 					{
-						if(Spr.hitWall())
+						if(Spr.hitWall(this))
 							Spr.x = x - Spr.width;
 					}
 					else
@@ -131,7 +131,7 @@ package com.adamatomic.flixel
 				{
 					if(overlapsPoint(Spr.x,Spr.y + (Spr.height>>1)))
 					{
-						if(Spr.hitWall())
+						if(Spr.hitWall(this))
 							Spr.x = x + width;
 					}
 					else
@@ -141,7 +141,7 @@ package com.adamatomic.flixel
 				{
 					if(overlapsPoint(Spr.x + Spr.width,Spr.y + (Spr.height>>1)))
 					{
-						if(Spr.hitWall())
+						if(Spr.hitWall(this))
 							Spr.x = x - Spr.width;
 					}
 					else
@@ -152,7 +152,7 @@ package com.adamatomic.flixel
 				{
 					if(overlapsPoint(Spr.x + (Spr.width>>1),Spr.y + Spr.height))
 					{
-						if(Spr.hitFloor())
+						if(Spr.hitFloor(this))
 							Spr.y = y - Spr.height;
 					}
 					else
@@ -162,7 +162,7 @@ package com.adamatomic.flixel
 				{
 					if(overlapsPoint(Spr.x + (Spr.width>>1),Spr.y))
 					{
-						if(Spr.hitCeiling())
+						if(Spr.hitCeiling(this))
 							Spr.y = y + height;
 					}
 					else
@@ -183,9 +183,9 @@ package com.adamatomic.flixel
 					{
 						if((Spr.x + Spr.width - bias > x) && (Spr.x + bias < x + width))
 						{
-							if((Spr.velocity.y > 0) && (Spr.y + Spr.height > y) && (Spr.y + Spr.height < y + height) && Spr.hitFloor())
+							if((Spr.velocity.y > 0) && (Spr.y + Spr.height > y) && (Spr.y + Spr.height < y + height) && Spr.hitFloor(this))
 								Spr.y = y - Spr.height;
-							else if((Spr.velocity.y < 0) && (Spr.y > y) && (Spr.y < y + height) && Spr.hitCeiling())
+							else if((Spr.velocity.y < 0) && (Spr.y > y) && (Spr.y < y + height) && Spr.hitCeiling(this))
 								Spr.y = y + height;
 						}
 					}
@@ -193,9 +193,9 @@ package com.adamatomic.flixel
 					{
 						if((Spr.y + Spr.height - bias > y) && (Spr.y + bias < y + height))
 						{
-							if((Spr.velocity.x > 0) && (Spr.x + Spr.width > x) && (Spr.x + Spr.width < x + width) && Spr.hitWall())
+							if((Spr.velocity.x > 0) && (Spr.x + Spr.width > x) && (Spr.x + Spr.width < x + width) && Spr.hitWall(this))
 								Spr.x = x - Spr.width;
-							else if((Spr.velocity.x < 0) && (Spr.x > x) && (Spr.x < x + width) && Spr.hitWall())
+							else if((Spr.velocity.x < 0) && (Spr.x > x) && (Spr.x < x + width) && Spr.hitWall(this))
 								Spr.x = x + width;
 						}
 					}
@@ -206,9 +206,9 @@ package com.adamatomic.flixel
 					{
 						if((Spr.y + Spr.height - bias > y) && (Spr.y + bias < y + height))
 						{
-							if((Spr.velocity.x > 0) && (Spr.x + Spr.width > x) && (Spr.x + Spr.width < x + width) && Spr.hitWall())
+							if((Spr.velocity.x > 0) && (Spr.x + Spr.width > x) && (Spr.x + Spr.width < x + width) && Spr.hitWall(this))
 								Spr.x = x - Spr.width;
-							else if((Spr.velocity.x < 0) && (Spr.x > x) && (Spr.x < x + width) && Spr.hitWall())
+							else if((Spr.velocity.x < 0) && (Spr.x > x) && (Spr.x < x + width) && Spr.hitWall(this))
 								Spr.x = x + width;
 						}
 					}
@@ -216,9 +216,9 @@ package com.adamatomic.flixel
 					{
 						if((Spr.x + Spr.width - bias > x) && (Spr.x + bias < x + width))
 						{
-							if((Spr.velocity.y > 0) && (Spr.y + Spr.height > y) && (Spr.y + Spr.height < y + height) && Spr.hitFloor())
+							if((Spr.velocity.y > 0) && (Spr.y + Spr.height > y) && (Spr.y + Spr.height < y + height) && Spr.hitFloor(this))
 								Spr.y = y - Spr.height;
-							else if((Spr.velocity.y < 0) && (Spr.y > y) && (Spr.y < y + height) && Spr.hitCeiling())
+							else if((Spr.velocity.y < 0) && (Spr.y > y) && (Spr.y < y + height) && Spr.hitCeiling(this))
 								Spr.y = y + height;
 						}
 					}
@@ -228,9 +228,9 @@ package com.adamatomic.flixel
 			{
 				if((Spr.x + Spr.width - bias > x) && (Spr.x + bias < x + width))
 				{
-					if((Spr.velocity.y > 0) && (Spr.y + Spr.height > y) && (Spr.y + Spr.height < y + height) && Spr.hitFloor())
+					if((Spr.velocity.y > 0) && (Spr.y + Spr.height > y) && (Spr.y + Spr.height < y + height) && Spr.hitFloor(this))
 						Spr.y = y - Spr.height;
-					else if((Spr.velocity.y < 0) && (Spr.y > y) && (Spr.y < y + height) && Spr.hitCeiling())
+					else if((Spr.velocity.y < 0) && (Spr.y > y) && (Spr.y < y + height) && Spr.hitCeiling(this))
 						Spr.y = y + height;
 				}
 			}
@@ -238,9 +238,9 @@ package com.adamatomic.flixel
 			{
 				if((Spr.y + Spr.height - bias > y) && (Spr.y + bias < y + height))
 				{
-					if((Spr.velocity.x > 0) && (Spr.x + Spr.width > x) && (Spr.x + Spr.width < x + width) && Spr.hitWall())
+					if((Spr.velocity.x > 0) && (Spr.x + Spr.width > x) && (Spr.x + Spr.width < x + width) && Spr.hitWall(this))
 						Spr.x = x - Spr.width;
-					else if((Spr.velocity.x < 0) && (Spr.x > x) && (Spr.x < x + width) && Spr.hitWall())
+					else if((Spr.velocity.x < 0) && (Spr.x > x) && (Spr.x < x + width) && Spr.hitWall(this))
 						Spr.x = x + width;
 				}
 			}
