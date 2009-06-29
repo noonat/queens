@@ -10,7 +10,7 @@ package com.noonat.queens
 	{
 		[Embed(source="../../../data/queens/queen.png")] private var ImgQueen:Class;
 		
-		private var _doubleJumped:Boolean = false;
+		private var _jumped:Boolean = false;
 		private var _intro:Boolean = true;
 		private var _standingUp:Boolean = false;
 		private var _jumpVelocity:int = 180;
@@ -19,6 +19,9 @@ package com.noonat.queens
 		
 		public function Queen(X:int,Y:int)
 		{
+			//X = 1234;
+			//Y = -112;
+			//_intro = false;
 			super(ImgQueen, X, Y, true, true);
 			
 			// bounding box tweaks
@@ -43,8 +46,8 @@ package com.noonat.queens
 		
 		override public function update():void
 		{
-			FlxG.log(Math.floor(x).toString());
-			if (!dead && y > 240) {
+			//FlxG.log(Math.floor(x).toString());
+			if (!dead && y > 320) {
 				kill();
 			}
 			
@@ -82,14 +85,15 @@ package com.noonat.queens
 						facing(true);
 						acceleration.x += drag.x;
 					}
-					if (FlxG.justPressed(FlxG.A)) {
-						if (!velocity.y) {
+					if (FlxG.justPressed(FlxG.A) && !_jumped && velocity.y < 30) {
+						//if (velocity.y < 100) {
+							_jumped = true;
 							velocity.y = -_jumpVelocity;
-						}
-						else if (!_doubleJumped) {
-							velocity.y = -_jumpVelocity;
-							_doubleJumped = true;
-						}
+						//}
+						//else if (!_doubleJumped) {
+						//	velocity.y = -_jumpVelocity;
+						//	_doubleJumped = true;
+						//}
 					}
 				}
 			
@@ -117,11 +121,22 @@ package com.noonat.queens
 				play("standUp");
 				_standingUp = true;
 			}
-			_doubleJumped = false;
+			_jumped = false;
 			if (block is Platform) {
 				x += (block as Platform).moved;
 			}
 			return super.hitFloor(block);
+		}
+		
+		override public function hitWall(block:FlxBlock):Boolean
+		{
+			if (block is RockBlock) {
+				(block as RockBlock).rock.x += 0.2;
+				return true;
+			}  
+			else {
+				return super.hitWall(block);
+			}
 		}
 		
 		override public function kill():void

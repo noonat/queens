@@ -11,7 +11,7 @@ package {
 		public function Queens():void
 		{
 			super(320, 240, PlayState, 2, 0xff0f110b, 0xffffffff);
-			help("Hey", "What's up", "Yo");
+			help("Jump", "Unused", "Unused");
 		}
 	}
 }
