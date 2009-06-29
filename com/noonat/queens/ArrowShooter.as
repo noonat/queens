@@ -8,6 +8,7 @@ package com.noonat.queens
 		[Embed(source="../../../data/queens/arrow_shooter.png")] private var ImgArrowShooter:Class;
 		
 		public var screen:int;
+		private var _arrow:int = 0;
 		private var _arrows:FlxArray;
 		private var _queen:Queen;
 		private var _timer:Number = 2.0;
@@ -24,10 +25,15 @@ package com.noonat.queens
 		
 		public function fire():void
 		{
-			_arrows.add(FlxG.state.add(new Arrow(x, y + 2, -1)));
-			_arrows.add(FlxG.state.add(new Arrow(x, y + 6, -1)));
-			_arrows.add(FlxG.state.add(new Arrow(x, y + 2, 1)));
-			_arrows.add(FlxG.state.add(new Arrow(x, y + 6, 1)));
+			_arrows.add(FlxG.state.add(new Arrow(x, y + (_arrow * 16) + 4, -1)));
+			_arrows.add(FlxG.state.add(new Arrow(x, y + (_arrow * 16) + 11, -1)));
+			_arrows.add(FlxG.state.add(new Arrow(x + width - 8, y + (_arrow * 16) + 4, 1)));
+			_arrows.add(FlxG.state.add(new Arrow(x + width - 8, y + (_arrow * 16) + 11, 1)));
+			_arrow++;
+			if (_arrow == 2) {
+				_arrow = 0;
+			}
+			_timer += 1;
 		}
 		
 		override public function update():void
@@ -38,7 +44,6 @@ package com.noonat.queens
 			_timer -= FlxG.elapsed;
 			if (_timer < 0) {
 				fire();
-				_timer += 2;
 			}
 			super.update();
 		}

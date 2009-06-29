@@ -2,10 +2,13 @@ package com.noonat.queens
 {
 	import com.adamatomic.flixel.FlxBlock;
 	import com.adamatomic.flixel.FlxG;
+	import flash.display.BitmapData;
+	import flash.geom.Rectangle;
+	import flash.geom.Point;
 	
 	public class Platform extends FlxBlock
 	{
-		[Embed(source="../../../data/queens/dirt8.png")] private var ImgDirt:Class;
+		[Embed(source="../../../data/queens/platform.png")] private var ImgPlatform:Class;
 		
 		public static var AXIS_X:int = 0;
 		public static var AXIS_Y:int = 1;
@@ -16,24 +19,36 @@ package com.noonat.queens
 		private var _direction:int;
 		private var _min:Number;
 		private var _max:Number;
+		private var _r:Rectangle;
+		private var _p:Point;
+		private var _pixels:BitmapData;
 		private var _speed:Number;
 		private var _wait:Number;
 		private var _waiting:Number=0;
 		
 		public function Platform($x:Number, $y:Number, $w:Number, $h:Number,
 			$axis:int, $direction:int, $min:Number, $max:Number, $speed:Number, $wait:Number,
-			$tileGraphic:Class=null)
+			$graphic:Class=null)
 		{
-			if ($tileGraphic === null) {
-				$tileGraphic = ImgDirt;
-			}
-			super($x, $y, $w, $h, $tileGraphic);
+			super($x, $y, $w, $h, null);
+			_p = new Point();
+			_r = new Rectangle(0, 0, width, height);
+			_pixels = FlxG.addBitmap($graphic ? $graphic : ImgPlatform);
 			_axis = $axis;
 			_direction = $direction;
 			_min = $min;
 			_max = $max;
 			_speed = $speed;
 			_wait = $wait;
+		}
+		
+		override public function render():void
+		{
+			if (!visible) {
+				return;
+			}
+			getScreenXY(_p);
+			FlxG.buffer.copyPixels(_pixels, _r, _p, null, null, true);
 		}
 		
 		override public function update():void

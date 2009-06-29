@@ -102,11 +102,13 @@ package com.noonat.queens
 			
 			// screen 2
 			this.addArrowShooter(544, -112, -80, 0.25);
-			this.addArrowShooter(544, -96, -80, 1.25);
 			_platforms.add(this.add(new Platform(650, 200, 32, 8, Platform.AXIS_X, -1, 625, 725, 40, 2)));
 			_platforms.add(this.add(new Platform(800, 170, 32, 8, Platform.AXIS_X, 1, 800, 900, 40, 2)));
 			this.addRoofSpike(740);
 			this.addRoofSpike(805);
+			
+			// screen 3
+			this.addDirtBlock(940, 1440);
 			
 			this.add(_king);
 			this.add(_queen);
@@ -115,8 +117,12 @@ package com.noonat.queens
 		public function addArrowShooter(x:Number, y:Number, y2:Number, timer:Number=-1):ArrowShooter
 		{
 			y += 240;
-			_blocks.add(new FlxBlock(x, y, 16, 16, null));
-			return this.add(new ArrowShooter(x, y, _arrows, _queen, timer)) as ArrowShooter;
+			_blocks.add(new FlxBlock(x+6, y, 20, 32, null));
+			var shooter:ArrowShooter = this.add(new ArrowShooter(x, y, _arrows, _queen, timer)) as ArrowShooter;
+			this.add(new FlxBlock(x, y, 32, 32, ImgDirtFringe));
+			this.add(new FlxBlock(x, y, 32, 32, ImgDirtFringe));
+			this.add(new FlxBlock(x, y, 32, 32, ImgDirtFringe));
+			return shooter;
 		}
 		
 		public function addDirtBlock(x:Number, x2:Number, y:Number=-32, y2:Number=0, fringe:Boolean=true, objects:Boolean=true):void

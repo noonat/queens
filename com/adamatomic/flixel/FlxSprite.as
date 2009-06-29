@@ -308,9 +308,14 @@ package com.adamatomic.flixel
 		//@desc		Internal function to update the current animation frame
 		private function calcFrame():void
 		{
-			var rx:uint = _curAnim.frames[_curFrame]*_bw;
-			if(!facingRight && (_flipped > 0))
-				rx = (_flipped<<1)-rx-_bw;
+			if(_curAnim) {
+				var rx:uint = _curAnim.frames[_curFrame]*_bw;
+				if(!facingRight && (_flipped > 0))
+					rx = (_flipped<<1)-rx-_bw;
+			}
+			else {
+				rx = facingRight ? 0 : _bw;
+			}
 			_pixels.copyPixels(pixels,new Rectangle(rx,0,_bw,_bh),new Point());
 		}
 	}

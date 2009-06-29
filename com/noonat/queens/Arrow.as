@@ -10,9 +10,10 @@ package com.noonat.queens
 		
 		public function Arrow($x:Number, $y:Number, $direction:Number):void
 		{
-			super(ImgArrow, $x, $y, false, true);
-			this.acceleration.x = $direction * 1000;
-			this.maxVelocity.x = 500;
+			super(ImgArrow, $x, $y, true, true);
+			acceleration.x = $direction * 2000;
+			maxVelocity.x = 500;
+			height = 3;
 			_direction = $direction;
 		}
 		
@@ -25,7 +26,7 @@ package com.noonat.queens
 				kill();
 				return;
 			}
-			//facing(_direction < 0);
+			facing(_direction > 0);
 			super.update();
 		}
 	}
