@@ -9,20 +9,46 @@ package com.noonat.queens
 	public class Queen extends FlxSprite
 	{
 		[Embed(source="../../../data/queens/queen.png")] private var ImgQueen:Class;
+		[Embed(source="../../../data/queens/queen2.png")] private var ImgQueen2:Class;
+		[Embed(source="../../../data/queens/queen3.png")] private var ImgQueen3:Class;
+		[Embed(source="../../../data/queens/footstep.mp3")] private var SndFootstep:Class;
+		[Embed(source="../../../data/queens/hurt.mp3")] private var SndHurt:Class;
 		
+		private static var _lastQueen:Class=null;
 		private var _jumped:Boolean = false;
 		private var _intro:Boolean = true;
 		private var _standingUp:Boolean = false;
 		private var _jumpVelocity:int = 180;
 		private var _runVelocity:int = 70;
 		private var _restartTimer:Number = 0;
+		private var _lastSoundFrame:int=0;
 		
 		public function Queen(X:int,Y:int)
 		{
-			//X = 1234;
+			//screen 3
+			//X = 1280;
 			//Y = -112;
+			//screen 4
+			//X = 1440;
+			//Y = 160-32;
+			//X = 1464;
+			//Y = 242;
 			//_intro = false;
-			super(ImgQueen, X, Y, true, true);
+			do {
+				var s:Class;
+				var r:Number = Math.random();
+				if (r < 0.33) {
+					s = ImgQueen;
+				}
+				else if (r < 0.66) {
+					s = ImgQueen2;
+				}
+				else {
+					s = ImgQueen3;
+				}
+			} while (s === _lastQueen);
+			_lastQueen = s;
+			super(s, X, Y, true, true);
 			
 			// bounding box tweaks
 			offset.x = 5;
@@ -46,7 +72,7 @@ package com.noonat.queens
 		
 		override public function update():void
 		{
-			//FlxG.log(Math.floor(x).toString());
+			//FlxG.logObject({x: Math.floor(x).toString(), y: Math.floor(y).toString()});
 			if (!dead && y > 320) {
 				kill();
 			}
@@ -86,25 +112,28 @@ package com.noonat.queens
 						acceleration.x += drag.x;
 					}
 					if (FlxG.justPressed(FlxG.A) && !_jumped && velocity.y < 30) {
-						//if (velocity.y < 100) {
-							_jumped = true;
-							velocity.y = -_jumpVelocity;
-						//}
-						//else if (!_doubleJumped) {
-						//	velocity.y = -_jumpVelocity;
-						//	_doubleJumped = true;
-						//}
+						_jumped = true;
+						velocity.y = -_jumpVelocity;
+					}
+					if (FlxG.justPressed(FlxG.B)) {
+						FlxG.play(SndFootstep);
 					}
 				}
 			
 				// animation
 				if (velocity.y != 0) {
+					_lastSoundFrame = 0;
 					play("jump");
 				}
 				else if (velocity.x != 0) {
 					play("run");
+					if ((_curFrame == 1 || _curFrame == 3) && _lastSoundFrame != _curFrame) {
+						_lastSoundFrame = _curFrame;
+						FlxG.play(SndFootstep, 0.8);
+					}
 				}
 				else {
+					_lastSoundFrame = 0;
 					play("idle");
 				}
 			}
@@ -118,8 +147,12 @@ package com.noonat.queens
 			if (y > 64 && _intro) {
 				_intro = false;
 				FlxG.quake(0.005, 0.2);
+				FlxG.play(SndHurt, 0.5);
 				play("standUp");
 				_standingUp = true;
+			}
+			else if (velocity.y > 50) {
+				FlxG.play(SndFootstep, 0.8);
 			}
 			_jumped = false;
 			if (block is Platform) {
@@ -144,6 +177,7 @@ package com.noonat.queens
 			if (dead) {
 				return;
 			}
+			FlxG.play(SndHurt, 0.5);
 			play('dead');
 			super.kill();
 			exists = true;

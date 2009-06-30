@@ -9,6 +9,8 @@ package com.noonat.queens
 	{
 		[Embed(source="../../../data/queens/roof_spike.png")] private var ImgRoofSpike:Class;
 		[Embed(source="../../../data/gibs.png")] private var ImgDirtGibs:Class;
+		[Embed(source="../../../data/queens/spike.mp3")] private var SndSpike:Class;
+		[Embed(source="../../../data/queens/spike_rumble.mp3")] private var SndSpikeRumble:Class;
 		
 		private var _falling:Boolean = false;
 		private var _gibs:FlxEmitter;
@@ -42,6 +44,7 @@ package com.noonat.queens
 		
 		public function fall():void
 		{
+			FlxG.play(SndSpikeRumble, 0.1);
 			_falling = true;
 			shake(_shakeTime);
 		}
@@ -53,6 +56,7 @@ package com.noonat.queens
 		
 		override public function hitFloor(block:FlxBlock):Boolean
 		{
+			FlxG.play(SndSpike, 0.3);
 			_gibs.x = x;
 			_gibs.y = y-8;
 			_gibs.reset();

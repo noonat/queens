@@ -6,6 +6,7 @@ package com.noonat.queens
 	public class ArrowShooter extends Sprite
 	{
 		[Embed(source="../../../data/queens/arrow_shooter.png")] private var ImgArrowShooter:Class;
+		[Embed(source="../../../data/queens/arrow.mp3")] private var SndArrow:Class;
 		
 		public var screen:int;
 		private var _arrow:int = 0;
@@ -25,6 +26,7 @@ package com.noonat.queens
 		
 		public function fire():void
 		{
+			FlxG.play(SndArrow);
 			_arrows.add(FlxG.state.add(new Arrow(x, y + (_arrow * 16) + 4, -1)));
 			_arrows.add(FlxG.state.add(new Arrow(x, y + (_arrow * 16) + 11, -1)));
 			_arrows.add(FlxG.state.add(new Arrow(x + width - 8, y + (_arrow * 16) + 4, 1)));

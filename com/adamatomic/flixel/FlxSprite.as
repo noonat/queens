@@ -36,7 +36,7 @@ package com.adamatomic.flixel
 		private var _animations:FlxArray;
 		private var _flipped:uint;
 		private var _curAnim:FlxAnim;
-		private var _curFrame:uint;
+		protected var _curFrame:uint;
 		private var _frameTimer:Number;
 		
 		//helpers

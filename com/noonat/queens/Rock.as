@@ -8,22 +8,12 @@ package com.noonat.queens
 		
 		public var block:RockBlock;
 		
-		private var _frozen:Boolean=false;
-		private var _frozenY:Number;
-		
 		public function Rock($x:Number, $y:Number):void
 		{
 			super(ImgRock, $x, $y, false, false);
 			block = new RockBlock(this, x, y, width, height, null);
 			acceleration.y = 840;
 			maxVelocity.x = 20;
-			freeze();
-		}
-		
-		public function freeze():void
-		{
-			_frozen = true;
-			_frozenY = y;
 		}
 		
 		override public function hitFloor(block:FlxBlock):Boolean

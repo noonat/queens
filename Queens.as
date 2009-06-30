@@ -10,7 +10,7 @@ package {
 	{
 		public function Queens():void
 		{
-			super(320, 240, PlayState, 2, 0xff0f110b, 0xffffffff);
+			super(320, 240, MenuState, 2, 0xff0f110b, 0xffffffff);
 			help("Jump", "Unused", "Unused");
 		}
 	}

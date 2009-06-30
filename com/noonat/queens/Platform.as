@@ -9,6 +9,7 @@ package com.noonat.queens
 	public class Platform extends FlxBlock
 	{
 		[Embed(source="../../../data/queens/platform.png")] private var ImgPlatform:Class;
+		[Embed(source="../../../data/queens/crusher.mp3")] private var SndCrusher:Class;
 		
 		public static var AXIS_X:int = 0;
 		public static var AXIS_Y:int = 1;
@@ -22,12 +23,13 @@ package com.noonat.queens
 		private var _r:Rectangle;
 		private var _p:Point;
 		private var _pixels:BitmapData;
-		private var _speed:Number;
+		private var _speedNeg:Number;
+		private var _speedPos:Number;
 		private var _wait:Number;
 		private var _waiting:Number=0;
 		
 		public function Platform($x:Number, $y:Number, $w:Number, $h:Number,
-			$axis:int, $direction:int, $min:Number, $max:Number, $speed:Number, $wait:Number,
+			$axis:int, $direction:int, $min:Number, $max:Number, $speed:*, $wait:Number,
 			$graphic:Class=null)
 		{
 			super($x, $y, $w, $h, null);
@@ -38,7 +40,8 @@ package com.noonat.queens
 			_direction = $direction;
 			_min = $min;
 			_max = $max;
-			_speed = $speed;
+			_speedNeg = $speed is Number ? $speed : $speed[0];
+			_speedPos = $speed is Number ? $speed : $speed[1];
 			_wait = $wait;
 		}
 		
@@ -53,9 +56,12 @@ package com.noonat.queens
 		
 		override public function update():void
 		{
+			if (FlxG.state is PlayState && (FlxG.state as PlayState).broken) {
+				return;
+			}
 			moved = 0;
-			if (x+width < -FlxG.followMin.x || x > -FlxG.followMin.x+480 ||
-				y+height < -240 || y > 240) {
+			if (x+width < -FlxG.followMin.x || x > -FlxG.followMax.x+FlxG.width ||
+				y+height < -FlxG.followMin.y || y > -FlxG.followMax.y+FlxG.height) {
 				return;
 			}
 			var elapsed:Number = FlxG.elapsed;
@@ -65,12 +71,12 @@ package com.noonat.queens
 			}
 			if (_waiting <= 0) {
 				var value:Number = _axis === AXIS_X ? x : y;
-				moved = _direction * _speed * elapsed
+				moved = _direction * (_direction < 0 ? _speedNeg : _speedPos) * elapsed
 				value += moved;
 				if (_direction < 0) {
 					if (value < _min) {
-						moved += (_min - value);
-						value = _min;
+						//moved += (_min - value);
+						//value = _min;
 						_direction = 1;
 						if (_wait) {
 							_waiting = _wait;
@@ -79,6 +85,10 @@ package com.noonat.queens
 				}
 				else {
 					if (value > _max) {
+						if (height === 64) {
+							FlxG.quake(0.0025, 0.2);
+							FlxG.play(SndCrusher);
+						}
 						moved -= (value - _max);
 						value = _max;
 						_direction = -1;

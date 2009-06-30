@@ -11,11 +11,12 @@ package com.noonat.queens
 		private var _intro:Boolean = true;
 		private var _jumpVelocity:int = 180;
 		private var _runVelocity:int = 20;
+		private var _queen:Queen;
 		
-		public function King(X:int,Y:int)
+		public function King($queen:Queen, $x:int,$y:int)
 		{
-			super(ImgKing, X, Y, true, true);
-			
+			super(ImgKing, $x, $y, true, true);
+			_queen = $queen;
 			// bounding box tweaks
 			width = 8;
 			height = 14;
@@ -31,7 +32,18 @@ package com.noonat.queens
 			// animations
 			addAnimation("idle", [1]);
 			addAnimation("run", [1, 2, 3, 0], 5);
+			addAnimation("dead", [4]);
 			play("idle");
+		}
+		
+		override public function kill():void
+		{
+			if (dead) {
+				return;
+			}
+			play('dead');
+			super.kill();
+			exists = true;
 		}
 		
 		override public function update():void
@@ -43,29 +55,50 @@ package com.noonat.queens
 				else {
 					_intro = false;
 					acceleration.x = 0;
+					drag.x /= 2;
+					maxVelocity.x /= 2;
 				}
 			}
 			else {
-				// movement
-				/*
-				acceleration.x = 0;
-				if (FlxG.kLeft) {
-					facing(false);
-					acceleration.x -= drag.x;
+				if (_queen.x > 180) {
+					if (x < 440) {
+						facing(true);
+						acceleration.x += drag.x;
+					}
+					else {
+						facing(false);
+						acceleration.x = 0;
+					}
 				}
-				else if (FlxG.kRight) {
-					facing(true);
-					acceleration.x += drag.x;
+				if (_queen.x > 480) {
+					if (x < 480-16) {
+						x = 480-16;
+					}
+					if (x < 480*2) {
+						facing(true);
+						acceleration.x += drag.x
+					}
+					else {
+						facing(false);
+						acceleration.x = 0;
+					}
 				}
-				*/
-				//acceleration.x += drag.x;
+				if (_queen.x > 1200 && x < 1200) {
+					x = 1612;
+					y = 50;
+				}
 			}
 			
-			if (velocity.x != 0) {
-				play("run");
+			if (!dead) {
+				if (velocity.x != 0) {
+					play("run");
+				}
+				else {
+					play("idle");
+				}
 			}
 			else {
-				play("idle");
+				acceleration.y = 0;
 			}
 				
 			// update position and animation

@@ -12,8 +12,8 @@ package com.noonat.queens
 		
 		public function inFollowBounds():Boolean
 		{
-			if (x+width < -FlxG.followMin.x || x > -FlxG.followMin.x+480 ||
-				y+height < -240 || y > 240) {
+			if (x+width < -FlxG.followMin.x || x > -FlxG.followMax.x+FlxG.width ||
+				y+height < -FlxG.followMin.y || y > -FlxG.followMax.y+FlxG.height) {
 				return false;
 			}
 			else {

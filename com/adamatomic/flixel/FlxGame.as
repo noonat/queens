@@ -136,7 +136,7 @@ package com.adamatomic.flixel
 				_fSound = SndFlixel;
 			else
 				_fSound = FlixelSound;
-			if (true) {
+			if (false) {
 				_fSound = null;
 				_logoTimerFinished = 0;
 			}

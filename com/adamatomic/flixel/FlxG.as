@@ -514,5 +514,14 @@ package com.adamatomic.flixel
 			mouse.x = state.mouseX-scroll.x;
 			mouse.y = state.mouseY-scroll.y;
 		}
+		
+		static public function logObject(object:Object):void
+		{
+			var pairs:Array = [];
+			for (var key:String in object) {
+				pairs.push(key+'='+object[key].toString());
+			}
+			log(pairs.join(', '));
+		}
 	}
 }
